@@ -22,6 +22,7 @@ function initApp() {
     renderHomeSignatures();
     renderFullMenu();
     updateCartBadge();
+    renderAdminQueue();
 }
 
 // --- Navigation Logic ---
@@ -148,17 +149,15 @@ function renderCart() {
     }
     
     content.innerHTML = cart.map(item => `
-        <div class="menu-card-app" style="margin-bottom: 10px;">
-            <div style="flex-grow: 1;">
-                <div style="display: flex; justify-content: space-between;">
-                    <h4 style="color: var(--gold);">${item.name}</h4>
-                    <span>₹${item.price * item.qty}</span>
-                </div>
-                <div style="display: flex; gap: 15px; align-items: center; margin-top: 10px;">
-                    <button class="chip" onclick="changeQty(${item.id}, -1)">-</button>
-                    <span>${item.qty}</span>
-                    <button class="chip" onclick="changeQty(${item.id}, 1)">+</button>
-                </div>
+        <div class="cart-item-premium">
+            <div class="header">
+                <h4 style="color: var(--gold);">${item.name}</h4>
+                <span style="font-weight: 700;">₹${item.price * item.qty}</span>
+            </div>
+            <div class="controls">
+                <button onclick="changeQty(${item.id}, -1)">-</button>
+                <span style="font-weight: 800;">${item.qty}</span>
+                <button onclick="changeQty(${item.id}, 1)">+</button>
             </div>
         </div>
     `).join('');
@@ -216,6 +215,28 @@ function placeAppOrder() {
     // Simulate tracking
     setTimeout(() => document.getElementById('appProgressBar').style.width = '66%', 5000);
     setTimeout(() => document.getElementById('appProgressBar').style.width = '100%', 15000);
+}
+
+function renderAdminQueue() {
+    const queue = document.getElementById('adminQueue');
+    if (!queue) return;
+
+    const mockOrders = [
+        { id: 'APP-8421', items: 'Chicken Triple Rice, Momos', total: 530, status: 'Preparing' },
+        { id: 'APP-9012', items: 'Paneer Tikka, Veg Triple Rice', total: 600, status: 'Pending' },
+        { id: 'APP-7734', items: 'Chicken Khapsa Rice', total: 290, status: 'Out for Delivery' }
+    ];
+
+    queue.innerHTML = mockOrders.map(order => `
+        <div class="admin-queue-item">
+            <div class="info">
+                <h5>Order #${order.id}</h5>
+                <p>${order.items}</p>
+                <p style="color: white; font-weight: 700;">₹${order.total}</p>
+            </div>
+            <div class="status-badge">${order.status}</div>
+        </div>
+    `).join('');
 }
 
 // --- Utils ---
