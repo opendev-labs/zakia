@@ -22,11 +22,6 @@ function initApp() {
     renderHomeSignatures();
     renderFullMenu();
     updateCartBadge();
-    
-    // Check for location on start
-    if (localStorage.getItem('userPin')) {
-        document.getElementById('locationOverlay').style.display = 'none';
-    }
 }
 
 // --- Navigation Logic ---
