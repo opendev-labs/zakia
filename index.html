@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Zaika Hotel | Premium App</title>
+    
+    <!-- PWA & Native App Meta -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f0f0f">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- App Header (Native Feel) -->
+    <header class="app-header">
+        <div class="header-content">
+            <a href="#" class="logo">ZAIKA <span>HOTEL</span></a>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="openCart()">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span class="badge" id="cartBadge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Bottom Nav (Native Feel) -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" onclick="switchView('home', this)">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item" onclick="switchView('menu', this)">
+            <i class="fas fa-utensils"></i>
+            <span>Menu</span>
+        </a>
+        <a href="#" class="nav-item" onclick="switchView('search', this)">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="nav-item" onclick="switchView('orders', this)">
+            <i class="fas fa-receipt"></i>
+            <span>Orders</span>
+        </a>
+        <a href="#" class="nav-item" onclick="switchView('admin', this)">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin</span>
+        </a>
+    </nav>
+
+    <!-- Main Content Area (Views) -->
+    <main class="app-content">
+        
+        <!-- Home View -->
+        <section id="view-home" class="view active">
+            <div class="hero-app">
+                <div class="hero-content" data-aos="fade-up">
+                    <h1 style="font-size: 3.5rem;">Authentic <br> <span>Taste</span></h1>
+                    <p>Experience the finest Chinese & Dhaba specials. <br> Open until 4:00 AM.</p>
+                    <button class="btn-premium btn-primary-premium" onclick="switchView('menu')">Order Now</button>
+                </div>
+            </div>
+            
+            <div class="container" style="padding-top: 40px;">
+                <h2 style="margin-bottom: 20px;">Chef's Pick</h2>
+                <div class="horizontal-scroll" id="signaturesHome">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu View -->
+        <section id="view-menu" class="view">
+            <div class="container">
+                <h2 class="view-title">Our Menu</h2>
+                
+                <!-- Category Chips (Horizontal Scroll) -->
+                <div class="category-chips">
+                    <div class="chip active" onclick="filterByCategory('all', this)">All</div>
+                    <div class="chip" onclick="filterByCategory('chinese-rice-noodles', this)">Chinese</div>
+                    <div class="chip" onclick="filterByCategory('dhaba-specials', this)">Dhaba</div>
+                    <div class="chip" onclick="filterByCategory('starters', this)">Starters</div>
+                    <div class="chip" onclick="filterByCategory('veg-delights', this)">Veg</div>
+                    <div class="chip" onclick="filterByCategory('others', this)">More</div>
+                </div>
+
+                <div class="menu-list" id="fullMenuList">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Search View -->
+        <section id="view-search" class="view">
+            <div class="container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="appSearch" placeholder="Search for dishes..." onkeyup="appSearch()">
+                </div>
+                <div id="searchResults" class="menu-list">
+                    <p style="text-align: center; color: #888; margin-top: 50px;">Search for your favorite flavors...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders View -->
+        <section id="view-orders" class="view">
+            <div class="container">
+                <h2 class="view-title">My Orders</h2>
+                <div id="myOrdersList">
+                    <p style="text-align: center; color: #888; margin-top: 50px;">No active orders yet.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin View -->
+        <section id="view-admin" class="view">
+            <div class="container">
+                <h2 class="view-title">Admin Console</h2>
+                <div class="admin-grid">
+                    <div class="stat-card glass-card">
+                        <h4>Revenue</h4>
+                        <div class="value">₹42,850</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <h4>Live Orders</h4>
+                        <div class="value">12</div>
+                    </div>
+                </div>
+                
+                <h3 style="margin: 30px 0 20px;">Incoming Queue</h3>
+                <div id="adminQueue">
+                    <!-- Admin orders -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Location Overlay (Mandatory) -->
+    <div id="locationOverlay" class="full-modal">
+        <div class="modal-body glass-card">
+            <i class="fas fa-location-dot"></i>
+            <h2>Set Location</h2>
+            <p>Verify delivery in Vikhroli/Ghatkopar area.</p>
+            <div class="input-group">
+                <input type="text" id="appPincode" placeholder="Enter Pincode">
+                <button class="btn-premium btn-primary-premium" onclick="verifyAppPincode()">Verify</button>
+            </div>
+            <p id="appLocError" style="color: var(--primary); margin-top: 15px; display: none;">Area not serviceable.</p>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="side-drawer">
+        <div class="drawer-header">
+            <h3>My Basket</h3>
+            <i class="fas fa-times" onclick="closeCart()"></i>
+        </div>
+        <div id="appCartContent" class="drawer-body">
+            <!-- Items -->
+        </div>
+        <div class="drawer-footer">
+            <div class="total-row">
+                <span>Total</span>
+                <span id="appCartTotal">₹0</span>
+            </div>
+            <button class="btn-premium btn-primary-premium" style="width: 100%;" onclick="startAppCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Flow -->
+    <div id="checkoutModal" class="full-modal" style="display: none;">
+        <div class="modal-body glass-card" style="width: 100%; height: 100%; border-radius: 0;">
+            <div id="check-step-1">
+                <div class="modal-header">
+                    <i class="fas fa-arrow-left" onclick="closeCheckout()"></i>
+                    <h2>Delivery Details</h2>
+                </div>
+                <div class="form-body">
+                    <input type="text" id="aName" placeholder="Name" class="app-input">
+                    <input type="text" id="aPhone" placeholder="Phone" class="app-input">
+                    <textarea id="aAddress" placeholder="Full Address" class="app-input" style="height: 100px;"></textarea>
+                    <button class="btn-premium btn-primary-premium" style="width: 100%;" onclick="toAppPayment()">Continue</button>
+                </div>
+            </div>
+            
+            <div id="check-step-2" style="display: none;">
+                <div class="modal-header">
+                    <i class="fas fa-arrow-left" onclick="backToDelivery()"></i>
+                    <h2>Payment</h2>
+                </div>
+                <div class="form-body">
+                    <div class="pay-option active" onclick="selectAppPay('COD', this)">
+                        <i class="fas fa-money-bill-wave"></i> Cash on Delivery
+                    </div>
+                    <div class="pay-option" onclick="selectAppPay('Online', this)">
+                        <i class="fas fa-credit-card"></i> Pay Online (UPI/Card)
+                    </div>
+                    <button class="btn-premium btn-primary-premium" style="width: 100%; margin-top: 40px;" onclick="placeAppOrder()">Place Order</button>
+                </div>
+            </div>
+            
+            <div id="check-step-3" style="display: none; text-align: center; padding-top: 50px;">
+                <i class="fas fa-check-circle" style="font-size: 5rem; color: #4caf50;"></i>
+                <h2 style="margin-top: 20px;">Order Success!</h2>
+                <p>Order ID: <span id="appOrderID"></span></p>
+                <div class="tracking-bar">
+                    <div id="appProgressBar"></div>
+                </div>
+                <button class="btn-premium" onclick="location.reload()">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/919323734393" class="wa-fab">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>
