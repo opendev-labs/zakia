@@ -438,42 +438,42 @@ body {
 
 .pay-option.active { border-color: var(--gold); background: rgba(255, 193, 7, 0.1); }
 
-/* --- Floating Action Buttons --- */
-.floating-actions {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
+/* --- Hero Action Buttons --- */
+.hero-actions-small {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 2000;
+    gap: 12px;
+    margin-top: 20px;
 }
 
-.action-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
+.hero-mini-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    gap: 8px;
     transition: var(--transition);
-    text-decoration: none;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
-.action-btn:hover { transform: scale(1.1); }
+.hero-mini-btn i { font-size: 0.9rem; }
 
-.wa-btn {
-    background: #25d366;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+.hero-call {
+    background: rgba(33, 150, 243, 0.15);
+    border-color: rgba(33, 150, 243, 0.3);
 }
 
-.call-btn {
-    background: #2196F3;
-    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+.hero-wa {
+    background: rgba(37, 211, 102, 0.15);
+    border-color: rgba(37, 211, 102, 0.3);
+}
+
+.hero-mini-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .tracking-bar {
